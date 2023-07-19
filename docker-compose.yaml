@@ -1,31 +1,33 @@
-version: "3.7"
+version: "3.9"
+
 services:
   db:
-    image: postgres:12.2
+    image: postgres:latest
+    container_name: your_name_container
     restart: always
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
-      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${NAME_DB}
+      POSTGRES_USER: ${USER_DB}
+      POSTGRES_PASSWORD: ${PASSWORD_DB}
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "your_need_ports:5432"
 
   pgadmin:
-    image: dpage/pgadmin4:4.18
+    image: dpage/pgadmin4:latest
+    container_name: your_pgname_container
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
-      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_PASS}
       PGADMIN_LISTEN_PORT: 80
     ports:
-      - "5050:80"
+      - "your_need_ports:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-    links:
-      - "db:pgsql-server"
+    depends_on:
+      - db
 
 volumes:
   db-data:
